@@ -1,5 +1,8 @@
 import logo from '../../assets/logo.png'
 import Word from "../../components/Word/Word"
+import PlayerList from '../../components/PlayerList/PlayerList'
+import Canvas from '../../components/Canvas/Canvas'
+import Chat from '../../components/Chat/Chat'
 import './game-page.styles.scss'
 
 export default function GamePage() {
@@ -11,9 +14,9 @@ export default function GamePage() {
         <Word />
         <div className='player-container'></div>
         <div className='main-game-components'>
-            <div className='player-rank'>rank</div>
-            <div className='canvas'> canvas</div>
-            <div className="chat">chat</div>
+            <PlayerList />
+            <Canvas />
+            <Chat />
         </div>
     </div>
   )
