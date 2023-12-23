@@ -1,0 +1,40 @@
+.game-container{
+    display: grid;
+    grid-template-columns: 20%;
+    border: 1px solid red;
+}
+
+.word-component{
+    display: flex;
+    align-items: center;
+    background-color: white;
+    grid-column-start: 1;
+    grid-column-end: span 5;
+    border-radius: 15px;
+    border: 6px solid #000;
+    height: 14vh;
+}
+
+.clock{
+    align-self: center;
+    height: 100%;
+}
+
+.main-game-components{
+    grid-column-start: 1;
+    grid-column-end: span 5;
+    display: grid;
+    column-gap: 5px;
+    grid-template-columns: 20% 50% 29%;
+    
+}
+
+.player-rank{
+    background-color: green;
+}
+.canvas{
+    background-color: red;
+}
+.chat{
+    background-color: blue;
+}

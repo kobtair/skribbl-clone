@@ -1,0 +1,13 @@
+.word-component{
+    display: flex;
+    background-color: white;
+    grid-column-start: 1;
+    grid-column-end: span 5;
+    border-radius: 15px;
+    border: 6px solid #000;
+    height: 14vh;
+}
+
+.word{
+    margin: 0 auto
+}

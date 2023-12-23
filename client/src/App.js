@@ -1,9 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import GamePage from './pages/GamePage/GamePage';
+import background from './assets/background.jpeg'
 
 function App() {
   return (
-    <h1> HomePage</h1>
+    <div style={{backgroundImage: `url(${background})` }} className='container'>
+      <GamePage />
+    </div>
   );
 }
 
