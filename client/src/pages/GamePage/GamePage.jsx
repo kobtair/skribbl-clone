@@ -2,6 +2,7 @@ import logo from '../../assets/logo.png'
 import Word from "../../components/Word/Word"
 import PlayerList from '../../components/PlayerList/PlayerList'
 import Canvas from '../../components/Canvas/Canvas'
+import Palette from '../../components/Palette/Palette'
 import Chat from '../../components/Chat/Chat'
 import './game-page.styles.scss'
 
@@ -18,6 +19,7 @@ export default function GamePage() {
             <Canvas />
             <Chat />
         </div>
+        <Palette />
     </div>
   )
 }

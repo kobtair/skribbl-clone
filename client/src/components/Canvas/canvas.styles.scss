@@ -1,9 +1,12 @@
 .canvas-container{
-    background-color: red;
+    
     
     canvas{
         background: white;
-        height: 100%;
+        height: 59vh;
         width: 100%;
+    }
+    canvas:hover{
+        cursor: crosshair;
     }
 }
