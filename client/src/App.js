@@ -7,6 +7,7 @@ function App() {
     <div style={{backgroundImage: `url(${background})` }} className='container'>
       <GamePage />
     </div>
+
   );
 }
 
