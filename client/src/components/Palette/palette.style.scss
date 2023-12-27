@@ -1,0 +1,25 @@
+.palette-container{
+    grid-column-start: 1;
+    grid-column-end: span 5;
+    display: flex;
+    column-gap: 5px;
+    background-color: white;
+    margin-top: 5px;
+    padding: 5px;
+}
+.selected-color{
+    min-height: 100%;
+    aspect-ratio: 1;
+    border: 1px solid black;
+}
+.colors{
+    min-width: 40%;
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+}
+
+.color{
+    cursor: pointer;
+    aspect-ratio: 1;
+}
