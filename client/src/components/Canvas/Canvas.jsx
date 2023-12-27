@@ -1,9 +1,10 @@
 import "./canvas.styles.scss";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { CanvasContext } from "../../contexts/CanvasContext";
 
 export default function Canvas() {
+  const {ctxRef, currentColor} = useContext(CanvasContext)
   const canvasRef = useRef(null);
-  const ctxRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false)
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -12,12 +13,14 @@ export default function Canvas() {
     const ctx = canvas.getContext("2d");
     ctx.scale(2, 2);
     ctx.lineCap = "round";
-    ctx.strokeStyle = "black";
+    ctx.strokeStyle = currentColor;
     ctx.lineWidth = 5;
     ctxRef.current = ctx;
   }, []);
+
   const startDrawing = ({nativeEvent}) => {
     const {offsetX, offsetY} = nativeEvent;
+    ctxRef.current.strokeStyle = currentColor;
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(offsetX, offsetY)
     setIsDrawing(true);

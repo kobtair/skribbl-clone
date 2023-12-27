@@ -10,15 +10,16 @@
 .selected-color{
     min-height: 100%;
     aspect-ratio: 1;
-    background-color: blue;
+    border: 1px solid black;
 }
 .colors{
-    width: 40%;
+    min-width: 40%;
     border: 1px solid black;
     display: grid;
     grid-template-columns: repeat(13, 1fr);
 }
 
 .color{
+    cursor: pointer;
     aspect-ratio: 1;
 }

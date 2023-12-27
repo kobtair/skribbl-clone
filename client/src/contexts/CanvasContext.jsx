@@ -1,10 +1,20 @@
-import { createContext } from "react";
+import { createContext, useState, useRef } from "react";
 
-export const CanavasContext = createContext({});
+export const CanvasContext = createContext({
+  currentColor: "",
+  setCurrentColor: ()=>{},
+  ctxRef: null,
+});
 
 export const CanvasContextProvider = ({ children }) => {
-  const value = {};
+  const [currentColor, setCurrentColor] = useState("#000000");
+  const ctxRef = useRef(null);
+  const value = {
+    currentColor,
+    setCurrentColor,
+    ctxRef,
+  };
   return (
-    <CanavasContext.Provider value={value}>{children}</CanavasContext.Provider>
+    <CanvasContext.Provider value={value}>{children}</CanvasContext.Provider>
   );
 };
