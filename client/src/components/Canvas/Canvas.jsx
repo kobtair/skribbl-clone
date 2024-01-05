@@ -4,8 +4,17 @@ import { CanvasContext } from "../../contexts/CanvasContext";
 import { GameContext } from "../../contexts/GameContext";
 
 export default function Canvas() {
-  const { ctxRef, currentColor, brushSize, finishDrawing, startDrawing, draw, } = useContext(CanvasContext);
-  const {socket} = useContext(GameContext);
+  const {
+    ctxRef,
+    currentColor,
+    brushSize,
+    finishDrawing,
+    setIsDrawing,
+    isDrawing,
+    startDrawing,
+    draw,
+  } = useContext(CanvasContext);
+  const { socket } = useContext(GameContext);
   const canvasRef = useRef(null);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -21,7 +30,7 @@ export default function Canvas() {
 
   const handleMouseDown = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
-    socket.emit("start_drawing", {offsetX, offsetY});
+    socket.emit("start_drawing", { offsetX, offsetY });
     startDrawing(offsetX, offsetY);
   };
   const handleMouseUp = () => {
@@ -30,8 +39,13 @@ export default function Canvas() {
   };
   const handleMouseMove = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
-    socket.emit("draw", {offsetX, offsetY});
-    draw(offsetX, offsetY);
+    if (isDrawing) {
+      socket.emit("draw", { offsetX, offsetY });
+      draw(offsetX, offsetY);
+    }
+    else{
+      return;
+    }
   };
   return (
     <div className="canvas-container">
