@@ -4,7 +4,7 @@ import Player from '../Player/Player'
 export default function PlayerRank() {
   return (
     <div className='player-list'>
-        <Player />
+       {[...(new Array(7))].map((_,i)=><Player rank={i} key={i} />)} 
     </div>
   )
 }
