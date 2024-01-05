@@ -11,20 +11,25 @@ import { CanvasContext } from "../../contexts/CanvasContext";
 
 export default function GamePage() {
   const { setMessagesArray, messagesArray, socket } = useContext(GameContext);
-  const { startDrawing, draw, finishDrawing, isDrawing } = useContext(CanvasContext);
+  const { startDrawing, draw, finishDrawing,setIsDrawing, isDrawing } = useContext(CanvasContext);
   useEffect(() => {
     socket.on("receive_message", (data) => {
       const { username, message } = data;
       setMessagesArray([...messagesArray, { username, message }]);
     });
     socket.on("client_start_drawing", ({offsetX, offsetY}) => {
+      console.log("isDrawing: "+ isDrawing)
+      setIsDrawing(true);
       startDrawing(offsetX, offsetY);
     });
     socket.on("client_finish_drawing", () => {
+      setIsDrawing(false);
       finishDrawing();
       console.log("isDrawing: "+ isDrawing)
     });
     socket.on("client_draw", ({offsetX, offsetY}) => {
+      // console.log("isDrawing: "+ isDrawing)
+
       draw(offsetX, offsetY);
     });
   });

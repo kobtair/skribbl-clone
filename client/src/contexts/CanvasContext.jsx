@@ -19,24 +19,18 @@ export const CanvasContextProvider = ({ children }) => {
   const [isDrawing, setIsDrawing] = useState(false);
   const ctxRef = useRef(null);
   const startDrawing = (offsetX, offsetY) => {
-    setIsDrawing(true);
-    console.log("setIsDrawing by startDrawing"+ setIsDrawing);
+    setIsDrawing(true)
     ctxRef.current.strokeStyle = currentColor;
+    ctxRef.current.lineWidth = brushSize;
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(offsetX, offsetY);
   };
   const draw = (offsetX, offsetY) => {
-    if (!isDrawing) {
-      return null;
-    }
-    else{
-      ctxRef.current.lineTo(offsetX, offsetY);
-      ctxRef.current.stroke();
-    }
+    ctxRef.current.lineTo(offsetX, offsetY);
+    ctxRef.current.stroke();
   };
   const finishDrawing = () => {
     setIsDrawing(false);
-    console.log("setIsDrawing by finishDrawing"+ setIsDrawing);
     ctxRef.current.closePath();
   };
   const value = {
@@ -52,8 +46,6 @@ export const CanvasContextProvider = ({ children }) => {
     finishDrawing,
   };
   return (
-    <CanvasContext.Provider value={value}>
-      {children}
-    </CanvasContext.Provider>
+    <CanvasContext.Provider value={value}>{children}</CanvasContext.Provider>
   );
 };
