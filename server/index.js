@@ -3,6 +3,9 @@ const app = express();
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
+const Game = require("./config/game");
+
+const game = new Game();
 
 app.use(cors());
 
@@ -30,8 +33,19 @@ io.on("connection", (socket) => {
   socket.on("draw", (data) => {
     socket.broadcast.emit("client_draw", data);
   });
+  socket.on("join_game", (data) => {
+    const id = socket.id;
+    game.addPlayer({id, ...data});
+    socket.emit("game_joined", game.playersList);
+    socket.broadcast.emit("update_players", game.playersList);
+  });
+  socket.on("get_users", ()=>{
+    socket.emit("receive_users", game.playersList);
+  })
   socket.on("disconnect", () => {
     console.log(`a user has disconnected: ${socket.id}`);
+    game.removePlayer(socket.id);
+    socket.broadcast.emit("update_players",game.playersList);
   });
 });
 

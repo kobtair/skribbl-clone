@@ -8,11 +8,17 @@ import {
   eyesStyles,
   mouthStyles,
 } from "../../data/avatar";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../contexts/GameContext";
 
 const HomePage = () => {
-  const { setUsername, username, setAvatar, setIsLoggedIn } = useContext(GameContext);
+  const { setUsername, username, setAvatar, setIsLoggedIn, setPlayersList, socket } = useContext(GameContext);
+  useEffect(() => {
+    socket.on("game_joined", (data) =>{
+      setIsLoggedIn(true);
+      setPlayersList(data);
+    })
+  },[])
   const [topType, setTopType] = useState(10);
   const [clotheType, setClotheType] = useState(0);
   const [eyeType, setEyeType] = useState(2);
@@ -21,13 +27,14 @@ const HomePage = () => {
   const login = (e) => {
     e.preventDefault();
     if (username.trim() !== "") {
-      setAvatar({
+      const avatar = {
         top: hairStyles[topType],
         eye: eyesStyles[eyeType],
         mouth: mouthStyles[mouthType],
         clothe: clothingStyles[clotheType],
-      });
-      setIsLoggedIn(true);
+      }
+      setAvatar(avatar);
+      socket.emit("join_game", { username, avatar})
     }
   };
   const decrementStyle = (type) => {
@@ -80,7 +87,7 @@ const HomePage = () => {
         <div className="pic">
           <div className="less-than">
             {types.map((type, index) => (
-              <button key={index} onClick={() => decrementStyle(type)}>
+              <button type="button" key={index} onClick={() => decrementStyle(type)}>
                 <img key={index} src={lessThan} alt="less than" />
               </button>
             ))}
@@ -93,6 +100,7 @@ const HomePage = () => {
           <div className="greater-than">
             {types.map((type, index) => (
               <button
+                type="button"
                 key={index}
                 onClick={() => {
                   incrementStyle(type);

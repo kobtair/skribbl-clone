@@ -1,10 +1,13 @@
 import './player-list.styles.scss'
 import Player from '../Player/Player'
+import { GameContext } from '../../contexts/GameContext';
+import { useContext } from 'react';
 
 export default function PlayerRank() {
+  const {playersList} = useContext(GameContext);
   return (
     <div className='player-list'>
-       {[...(new Array(7))].map((_,i)=><Player rank={i} key={i} />)} 
+       {playersList.map((player, i)=><Player order={i} key={player.id} player={player} />)} 
     </div>
   )
 }
