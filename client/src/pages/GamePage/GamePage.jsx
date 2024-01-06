@@ -10,12 +10,15 @@ import "./game-page.styles.scss";
 import { CanvasContext } from "../../contexts/CanvasContext";
 
 export default function GamePage() {
-  const { setMessagesArray, messagesArray, socket } = useContext(GameContext);
+  const { setMessagesArray, messagesArray, socket, setPlayersList } = useContext(GameContext);
   const { startDrawing, draw, finishDrawing,setIsDrawing, isDrawing } = useContext(CanvasContext);
   useEffect(() => {
     socket.on("receive_message", (data) => {
       const { username, message } = data;
       setMessagesArray([...messagesArray, { username, message }]);
+    });
+    socket.on("update_players", (data) => {
+      setPlayersList(data);
     });
     socket.on("client_start_drawing", ({offsetX, offsetY}) => {
       console.log("isDrawing: "+ isDrawing)

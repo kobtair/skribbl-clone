@@ -15,6 +15,8 @@ export const GameContext = createContext({
   setAvatar: () => {},
   isLoggedIn: false,
   setIsLoggedIn: () => {},
+  playersList: {},
+  setPlayersList: ()=>{},
 });
 
 export const GameContextProvider = ({ children }) => {
@@ -22,6 +24,7 @@ export const GameContextProvider = ({ children }) => {
   const [messagesArray, setMessagesArray] = useState([]);
   const [avatar, setAvatar] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [playersList, setPlayersList] = useState([]);
   const sendMessage = (message) => {
     setMessagesArray([...messagesArray, {username, message}]);
     socket.emit("send_message", { username, message });
@@ -37,6 +40,8 @@ export const GameContextProvider = ({ children }) => {
     setAvatar,
     isLoggedIn,
     setIsLoggedIn,
+    playersList,
+    setPlayersList,
   };
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };
