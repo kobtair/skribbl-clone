@@ -23,8 +23,6 @@ export default function Canvas() {
     const ctx = canvas.getContext("2d");
     // ctx.scale(2, 2);
     ctx.lineCap = "round";
-    ctx.strokeStyle = currentColor;
-    ctx.lineWidth = brushSize;
     ctxRef.current = ctx;
   }, []);
 
@@ -54,7 +52,8 @@ export default function Canvas() {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseDown={handleMouseDown}
-      ></canvas>
+      >
+      </canvas>
     </div>
   );
 }

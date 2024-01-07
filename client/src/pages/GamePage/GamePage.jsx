@@ -3,6 +3,7 @@ import Word from "../../components/Word/Word";
 import PlayerList from "../../components/PlayerList/PlayerList";
 import Canvas from "../../components/Canvas/Canvas";
 import Palette from "../../components/Palette/Palette";
+import Modal from "../../components/Modal/Modal";
 import { GameContext } from "../../contexts/GameContext";
 import Chat from "../../components/Chat/Chat";
 import { useEffect, useContext } from "react";
@@ -10,34 +11,66 @@ import "./game-page.styles.scss";
 import { CanvasContext } from "../../contexts/CanvasContext";
 
 export default function GamePage() {
-  const { setMessagesArray, messagesArray, socket, setPlayersList } = useContext(GameContext);
-  const { startDrawing, draw, finishDrawing,setIsDrawing, isDrawing } = useContext(CanvasContext);
+  const {
+    setMessagesArray,
+    messagesArray,
+    socket,
+    setPlayersList,
+    playersList,
+    setDrawer,
+    username,
+    chooseWords,
+    isChoosing,
+  } = useContext(GameContext);
+  const { startDrawing, draw, finishDrawing, setIsDrawing, } =
+    useContext(CanvasContext);
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      const { username, message } = data;
-      setMessagesArray([...messagesArray, { username, message }]);
+      setMessagesArray([...messagesArray, data]);
     });
-    socket.on("update_players", (data) => {
+    socket.on("new_player", (data) => {
       setPlayersList(data);
     });
-    socket.on("client_start_drawing", ({offsetX, offsetY}) => {
-      console.log("isDrawing: "+ isDrawing)
+    socket.on("remove_player", (data) => {
+      setPlayersList(data);
+    });
+    socket.on("update_players_state", (data) => {
+      setPlayersList(data);
+      if (
+        data.find((player) => player.username === username).isChoosing
+      ) {
+        socket.emit("give_words");
+        console.log("asking for words");
+      }
+    });
+    socket.on("client_start_drawing", ({ offsetX, offsetY }) => {
       setIsDrawing(true);
       startDrawing(offsetX, offsetY);
     });
     socket.on("client_finish_drawing", () => {
       setIsDrawing(false);
       finishDrawing();
-      console.log("isDrawing: "+ isDrawing)
     });
-    socket.on("client_draw", ({offsetX, offsetY}) => {
-      // console.log("isDrawing: "+ isDrawing)
-
+    socket.on("client_draw", ({ offsetX, offsetY }) => {
       draw(offsetX, offsetY);
+    });
+    socket.on("receive_words",(words)=>{
+      chooseWords(words);
+    })
+    socket.on("start_session",(data)=>{
+
+    })
+    socket.on("game_started", ({ nextPlayer, chosenWords }) => {
+      setDrawer(nextPlayer);
+      console.log("next Player: " + nextPlayer);
+      if (nextPlayer === username) {
+        chooseWords(chosenWords);
+      }
     });
   });
   return (
     <div className="game-container">
+      {playersList.length < 2 || isChoosing ? <Modal /> : ""}
       <div className="logo-container">
         <img
           style={{ maxWidth: "100%", minHeight: "100%" }}

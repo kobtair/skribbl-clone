@@ -8,8 +8,13 @@ export default function Chat() {
   return (
     <div className="chat">
       <div className="chat-body">
-        {messagesArray.map(({username, message}, i) => (
-          <div className={`${i%2!==0 && "message-odd"} `}><span className="username">{`${username}: `}</span><span>{message}</span></div>
+        {messagesArray.map(({ username, message, color }, i) => (
+          <div key={i} className={`${i % 2 !== 0 && "message-odd"} `}>
+            <span
+              className={`username ${username === "server" ? "hidden" : ""}`}
+            >{`${username}: `}</span>
+            <span style={{ color: color }}>{message}</span>
+          </div>
         ))}
       </div>
       <form
@@ -20,9 +25,11 @@ export default function Chat() {
           sendMessage(message);
         }}
       >
-        <label >Guess:</label>
-        <input  onChange={(e) => setMessage(e.target.value)} type="text" />
-        <button className="send-button" type="submit">Send</button>
+        <label>Guess:</label>
+        <input onChange={(e) => setMessage(e.target.value)} type="text" />
+        <button className="send-button" type="submit">
+          Send
+        </button>
       </form>
     </div>
   );
