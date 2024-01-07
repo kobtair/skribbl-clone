@@ -17,6 +17,18 @@ export const GameContext = createContext({
   setIsLoggedIn: () => {},
   playersList: {},
   setPlayersList: ()=>{},
+  drawer: "",
+  setDrawer: () => {},
+  isChoosing: false,
+  wordsToChooseFrom: [],
+  chooseWords: () =>{},
+  setIsChoosing: () => {},
+  time: 60,
+  setTime: () => {},
+  round: 1,
+  setRound: ()=>{},
+  wordToGuessLength: 0,
+  setWordToGuessLength: () =>{},
 });
 
 export const GameContextProvider = ({ children }) => {
@@ -25,9 +37,19 @@ export const GameContextProvider = ({ children }) => {
   const [avatar, setAvatar] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [playersList, setPlayersList] = useState([]);
+  const [drawer, setDrawer] = useState("");
+  const [isChoosing, setIsChoosing] = useState(false);
+  const [wordsToChooseFrom, setWordsToChooseFrom] = useState([]);
+  const [time, setTime] = useState(60);
+  const [round, setRound] = useState(1);
+  const [wordToGuessLength, setWordToGuessLength] = useState(0);
+  const chooseWords = (chosenWords)=>{
+    setIsChoosing(true);
+    setWordsToChooseFrom(chosenWords);
+  }
   const sendMessage = (message) => {
     setMessagesArray([...messagesArray, {username, message}]);
-    socket.emit("send_message", { username, message });
+    socket.emit("send_message", { username, message, color: "black" });
   };
   const value = {
     username,
@@ -42,6 +64,17 @@ export const GameContextProvider = ({ children }) => {
     setIsLoggedIn,
     playersList,
     setPlayersList,
+    drawer,
+    setDrawer,
+    isChoosing,
+    wordsToChooseFrom,
+    chooseWords,
+    wordToGuessLength,
+    setWordToGuessLength,
+    time,
+    setTime,
+    round,
+    setRound,
   };
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };

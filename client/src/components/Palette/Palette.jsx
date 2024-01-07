@@ -2,15 +2,17 @@ import "./palette.style.scss";
 import colors from "../../data/colors";
 import { useContext } from "react";
 import { CanvasContext } from "../../contexts/CanvasContext";
+import { GameContext } from "../../contexts/GameContext";
 
 export default function Palette() {
   const { setCurrentColor, currentColor, ctxRef } = useContext(CanvasContext);
+  const {playersList, username} = useContext(GameContext);
   const clearCanvas = ()=>{
     ctxRef.current.clearRect(0,0,window.innerWidth, window.innerHeight)
   }
 
   return (
-    <div className="palette-container">
+    <div className={`palette-container ${playersList.find(player=>player.username === username).isDrawing?"":"hidden"}`}>
       <div style={{backgroundColor: currentColor}} className="selected-color"></div>
       <div className="colors">
         {colors.map((color) => (

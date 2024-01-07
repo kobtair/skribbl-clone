@@ -16,6 +16,7 @@ const HomePage = () => {
   useEffect(() => {
     socket.on("game_joined", (data) =>{
       setIsLoggedIn(true);
+      socket.emit("game_joined")
       setPlayersList(data);
     })
   },[])
@@ -76,7 +77,7 @@ const HomePage = () => {
         </div>
         <div className="input">
           <input
-            autoComplete="off"
+            autoComplete="false"
             onChange={(e) => {
               setUsername(e.target.value);
             }}
