@@ -1,4 +1,5 @@
 .word-component{
+    position: relative;
     display: flex;
     background-color: white;
     grid-column-start: 1;
@@ -9,5 +10,16 @@
 }
 
 .word{
-    margin: 0 auto
+    position: absolute;
+    left: 45%;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.word-to-guess{
+    text-align: center;
 }

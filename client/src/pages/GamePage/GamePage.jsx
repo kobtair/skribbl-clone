@@ -17,10 +17,14 @@ export default function GamePage() {
     socket,
     setPlayersList,
     playersList,
-    setDrawer,
     username,
     chooseWords,
     isChoosing,
+    setRound,
+    setTime,
+    setWordToGuessLength,
+    setIsTurnOver,
+    isTurnOver,
   } = useContext(GameContext);
   const { startDrawing, draw, finishDrawing, setIsDrawing, } =
     useContext(CanvasContext);
@@ -40,7 +44,6 @@ export default function GamePage() {
         data.find((player) => player.username === username).isChoosing
       ) {
         socket.emit("give_words");
-        console.log("asking for words");
       }
     });
     socket.on("client_start_drawing", ({ offsetX, offsetY }) => {
@@ -57,11 +60,22 @@ export default function GamePage() {
     socket.on("receive_words",(words)=>{
       chooseWords(words);
     })
-    socket.on("start_session",(data)=>{
-
+    socket.on("start_turn",(data)=>{
+      const {time, wordLength, round}= data;
+      setTime(time);
+      setWordToGuessLength(wordLength);
+      setRound(round);
+    })
+    socket.on("results_done",()=>{
+      setIsTurnOver(false);
+    })
+    socket.on("time", (time)=>{
+      setTime(time);
+    })
+    socket.on("turn_over", ()=>{
+      setIsTurnOver(true);
     })
     socket.on("game_started", ({ nextPlayer, chosenWords }) => {
-      setDrawer(nextPlayer);
       console.log("next Player: " + nextPlayer);
       if (nextPlayer === username) {
         chooseWords(chosenWords);
@@ -70,7 +84,7 @@ export default function GamePage() {
   });
   return (
     <div className="game-container">
-      {playersList.length < 2 || isChoosing ? <Modal /> : ""}
+      {playersList.length < 2 || isChoosing || isTurnOver ? <Modal /> : ""}
       <div className="logo-container">
         <img
           style={{ maxWidth: "100%", minHeight: "100%" }}

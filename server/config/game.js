@@ -27,9 +27,12 @@ class Game {
 
   chooseNextPlayer() {
     this.playersList.map((player) => (player.isChoosing = false));
-    const remainingPlayers = this.playersList.filter((player) => !player.isDone);
+    const remainingPlayers = this.playersList.filter(
+      (player) => !player.isDone
+    );
     if (!remainingPlayers.length) {
       this.startNewRound();
+      this.chooseNextPlayer();
     } else {
       const chosenPlayer =
         remainingPlayers[Math.floor(Math.random() * remainingPlayers.length)];
@@ -38,6 +41,9 @@ class Game {
       chosenPlayer.hasGuessed = true;
       this.drawer = chosenPlayer.username;
     }
+  }
+  getRemainingPlayers(){
+    return this.playersList.filter((player) => !player.isDone);
   }
   chooseThreeWords() {
     const shuffledWords = words.sort(() => Math.random() - 0.5);
@@ -49,16 +55,36 @@ class Game {
   }
   startNewRound() {
     this.currentRound++;
-    this.time = 0;
     this.playersList.map((player) => (player.isDone = false));
   }
-  reset(){
+  reset() {
     this.drawer = "";
     this.time = 60;
     this.currentWord = "";
     this.totalRounds = 3;
     this.currentRound = 1;
     this.isStarted = false;
+  }
+
+  getGuessedUsers() {
+    return this.playersList.filter((player) => player.hasGuessed);
+  }
+  resetTimer() {
+    this.time = 60;
+  }
+  resetPlayerState() {
+    this.playersList.map((player) => {
+      player.isChoosing = false;
+      player.hasGuessed = false;
+      player.isDrawing = false;
+    });
+  }
+  hasEveryoneGuessed() {
+    if (this.getGuessedUsers().length === this.playersList.length) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 

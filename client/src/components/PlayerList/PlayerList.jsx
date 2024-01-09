@@ -7,7 +7,7 @@ export default function PlayerRank() {
   const {playersList} = useContext(GameContext);
   return (
     <div className='player-list'>
-       {playersList.map((player, i)=><Player order={i} key={player.id} player={player} />)} 
+       {playersList.map((player, i)=><Player key={player.id} order={i} player={player} />)} 
     </div>
   )
 }

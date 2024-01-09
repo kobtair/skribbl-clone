@@ -1,14 +1,20 @@
+import { useContext } from 'react';
 import './player.styles.scss'
+import { GameContext } from '../../contexts/GameContext';
 
 export default function Player({player, order}) {
-  const {username, avatar, score, isChoosing} = player
+  const {username} = useContext(GameContext)
+  const {avatar, score, isChoosing, isDrawing, hasGuessed} = player
   const {top, eye, mouth, clothe} = avatar;
   return (
-    <div  className={`player-container ${order%2===0 && "player-odd"}`}>
+    <div  className={`player-container ${order%2===0 && "player-odd"} ${(hasGuessed && !isDrawing && !isChoosing )? "player-guessed" : ""}`}>
       <div className="rank">{`#1`}</div>
-      <div className="player-name">
+      <div className="player-name ">
         <div>
-        {username}({isChoosing ? "choosing": ""})
+        {`${player.username} `}
+          {username === player.username ? "(you)" : "" }
+        {isChoosing ? " 🤔 ": ""}
+        {isDrawing?" 🖊 " : ""}
         </div>
         <div>{score} points</div>
         </div>
