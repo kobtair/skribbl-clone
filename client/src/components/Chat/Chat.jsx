@@ -9,7 +9,7 @@ export default function Chat() {
     <div className="chat">
       <div className="chat-body">
         {messagesArray.map(({ username, message, color }, i) => (
-          <div key={i} className={`${i % 2 !== 0 && "message-odd"} `}>
+          <div className={i%2===0?"message-odd":""} key={i} >
             <span
               className={`username ${username === "server" ? "hidden" : ""}`}
             >{`${username}: `}</span>
