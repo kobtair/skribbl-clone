@@ -25,17 +25,30 @@ io.on("connection", (socket) => {
   };
   const endTurn = () => {
     const guessedUsers = game.getGuessedUsers();
+    const drawer = game.playersList.find((player) => player.isDrawing);
+    drawer.score += guessedUsers.length * 10;
+    updatePlayersState();
     clearInterval(timer);
     game.resetPlayerState();
     game.resetTimer();
-    io.sockets.emit("turn_over", guessedUsers);
-    timer = setTimeout(startNextTurn, 3000)
+    if (
+      game.getRemainingPlayers().length === 0 &&
+      game.currentRound === game.totalRounds
+    ) {
+      io.sockets.emit("game_over", game.playersList);
+      game.reset();
+      timer = setTimeout(startNextTurn, 5000);
+    } else {
+      io.sockets.emit("turn_over", guessedUsers);
+      timer = setTimeout(startNextTurn, 3000);
+    }
   };
-  const startNextTurn = ()=> {
-    io.sockets.emit("results_done")
+  const startNextTurn = () => {
+    io.sockets.emit("clear_canvas");
+    io.sockets.emit("results_done");
     game.chooseNextPlayer();
     updatePlayersState();
-  }
+  };
   const startTimer = () => {
     timer = setInterval(() => {
       io.sockets.emit("time", game.time);
@@ -52,12 +65,19 @@ io.on("connection", (socket) => {
       const guessedUser = game.playersList.find(
         (player) => player.id === socket.id
       );
+      const noGuessPlayers = game.playersList.filter(
+        (player) => !player.hasGuessed
+      );
+      if (!guessedUser.hasGuessed) {
+        guessedUser.score += noGuessPlayers.length * 10 + 10;
+        io.sockets.emit("receive_message", {
+          username: "server",
+          message: `${guessedUser.username} has guessed the word`,
+          color: "green",
+        });
+      }
       guessedUser.hasGuessed = true;
-      io.sockets.emit("receive_message", {
-        username: "server",
-        message: `${guessedUser.username} has guessed the word`,
-        color: "green",
-      });
+
       updatePlayersState();
       if (game.hasEveryoneGuessed()) {
         endTurn();
@@ -74,6 +94,9 @@ io.on("connection", (socket) => {
   });
   socket.on("draw", (data) => {
     socket.broadcast.emit("client_draw", data);
+  });
+  socket.on("clear_canvas", () => {
+    socket.broadcast.emit("clear_canvas");
   });
   socket.on("join_game", (data) => {
     const { username, avatar } = data;

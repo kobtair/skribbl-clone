@@ -33,6 +33,8 @@ export const GameContext = createContext({
   setCorrectWord: () => {},
   isTurnOver: false,
   setIsTurnOver: () => {},
+  isGameOver: false,
+  setIsGameOver: () => {},
 });
 
 export const GameContextProvider = ({ children }) => {
@@ -49,6 +51,7 @@ export const GameContextProvider = ({ children }) => {
   const [isAllowedToDraw, setIsAllowedToDraw] = useState(false);
   const [correctWord, setCorrectWord] = useState("");
   const [isTurnOver, setIsTurnOver] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
   const chooseWords = (chosenWords) => {
     setIsChoosing(true);
     setWordsToChooseFrom(chosenWords);
@@ -86,6 +89,8 @@ export const GameContextProvider = ({ children }) => {
     setCorrectWord,
     isTurnOver,
     setIsTurnOver,
+    isGameOver,
+    setIsGameOver,
   };
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };

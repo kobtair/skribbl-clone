@@ -5,12 +5,13 @@ import { CanvasContext } from "../../contexts/CanvasContext";
 import { GameContext } from "../../contexts/GameContext";
 
 export default function Palette() {
-  const { setCurrentColor, currentColor, ctxRef } = useContext(CanvasContext);
-  const {playersList, username, isAllowedToDraw} = useContext(GameContext);
-  const clearCanvas = ()=>{
-    ctxRef.current.clearRect(0,0,window.innerWidth, window.innerHeight)
+  const { setCurrentColor, currentColor, clearCanvas } = useContext(CanvasContext);
+  const { socket } = useContext(GameContext);
+  const {isAllowedToDraw} = useContext(GameContext);
+  const handleClear = ()=>{
+    clearCanvas();
+    socket.emit("clear_canvas");
   }
-
   return (
     <div className={`palette-container ${isAllowedToDraw?"":"hidden"}`}>
       <div style={{backgroundColor: currentColor}} className="selected-color"></div>
@@ -27,7 +28,7 @@ export default function Palette() {
           </div>
         ))}
       </div>
-      <button onClick={clearCanvas}>Clear Canvas</button>
+      <button onClick={handleClear}>Clear Canvas</button>
     </div>
   );
 }

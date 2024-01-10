@@ -13,6 +13,7 @@ export default function Modal() {
     socket,
     playersList,
     isTurnOver,
+    isGameOver,
   } = useContext(GameContext);
   const sendChoice = (e) => {
     setIsChoosing(false);
@@ -47,6 +48,18 @@ export default function Modal() {
       )}
       {isTurnOver ? (
         <div>
+          {playersList.sort((a,b)=> a.score - b.score).map((player) => (
+            <div>
+              {player.username} {player.score}
+            </div>
+          ))}
+        </div>
+      ) : (
+        ""
+      )}
+      {isGameOver ? (
+        <div>
+          Game has Ended
           {playersList.map((player) => (
             <div>
               {player.username} {player.score}
