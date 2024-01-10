@@ -27,9 +27,7 @@ class Game {
 
   chooseNextPlayer() {
     this.playersList.map((player) => (player.isChoosing = false));
-    const remainingPlayers = this.playersList.filter(
-      (player) => !player.isDone
-    );
+    const remainingPlayers = this.getRemainingPlayers();
     if (!remainingPlayers.length) {
       this.startNewRound();
       this.chooseNextPlayer();
@@ -64,6 +62,12 @@ class Game {
     this.totalRounds = 3;
     this.currentRound = 1;
     this.isStarted = false;
+    this.playersList.map(player=>{
+      player.hasGuessed = false;
+      player.isChoosing = false;
+      player.isDone = false;
+      player.isDrawing = false;
+    })
   }
 
   getGuessedUsers() {

@@ -25,8 +25,10 @@ export default function GamePage() {
     setWordToGuessLength,
     setIsTurnOver,
     isTurnOver,
+    isGameOver,
+    setIsGameOver
   } = useContext(GameContext);
-  const { startDrawing, draw, finishDrawing, setIsDrawing, } =
+  const { startDrawing, draw, finishDrawing, setIsDrawing, clearCanvas } =
     useContext(CanvasContext);
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -66,14 +68,21 @@ export default function GamePage() {
       setWordToGuessLength(wordLength);
       setRound(round);
     })
+    socket.on("clear_canvas", ()=>{
+      clearCanvas();
+    })
     socket.on("results_done",()=>{
       setIsTurnOver(false);
+      setIsGameOver(false);
     })
     socket.on("time", (time)=>{
       setTime(time);
     })
     socket.on("turn_over", ()=>{
       setIsTurnOver(true);
+    })
+    socket.on("game_over", ()=>{
+      setIsGameOver(true);
     })
     socket.on("game_started", ({ nextPlayer, chosenWords }) => {
       console.log("next Player: " + nextPlayer);
@@ -84,7 +93,7 @@ export default function GamePage() {
   });
   return (
     <div className="game-container">
-      {playersList.length < 2 || isChoosing || isTurnOver ? <Modal /> : ""}
+      {playersList.length < 2 || isChoosing || isTurnOver || isGameOver? <Modal /> : ""}
       <div className="logo-container">
         <img
           style={{ maxWidth: "100%", minHeight: "100%" }}
