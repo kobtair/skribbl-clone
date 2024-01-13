@@ -1,3 +1,5 @@
+/* making a Player class so we can instanciate and push a player object
+ and push it in the game when a player joins. */
 class Player{
     constructor(id, username, avatar){
         this.username = username;
@@ -9,12 +11,15 @@ class Player{
         this.hasGuessed = false;
         this.isChoosing = false;
     }
+    //method to reset score.
     resetScore(){
         this.score = 0;
     }
-    newRound(){
+    // method to reset player state.
+    resetState(){
+        this.isChoosing = false;
+        this.hasGuessed = false;
         this.isDrawing = false;
-        this.isDone = false;
     }
 }
 
