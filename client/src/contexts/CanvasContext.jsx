@@ -19,10 +19,10 @@ export const CanvasContextProvider = ({ children }) => {
   const [brushSize, setBrushSize] = useState(5);
   const [isDrawing, setIsDrawing] = useState(false);
   const ctxRef = useRef(null);
-  const startDrawing = (offsetX, offsetY) => {
+  const startDrawing = (offsetX, offsetY, color = currentColor, size = brushSize) => {
     setIsDrawing(true);
-    ctxRef.current.strokeStyle = currentColor;
-    ctxRef.current.lineWidth = brushSize;
+    ctxRef.current.strokeStyle = color;
+    ctxRef.current.lineWidth = size;
     ctxRef.current.beginPath();
     ctxRef.current.moveTo(offsetX, offsetY);
   };

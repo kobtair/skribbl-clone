@@ -22,13 +22,16 @@ export default function GamePage() {
     isChoosing,
     setRound,
     setTime,
-    setWordToGuessLength,
+    setWordToGuess,
     setIsTurnOver,
     isTurnOver,
     isGameOver,
-    setIsGameOver
+    setIsGameOver,
+    reset,
+    setIsAllowedToDraw,
+    setCorrectWord,
   } = useContext(GameContext);
-  const { startDrawing, draw, finishDrawing, setIsDrawing, clearCanvas } =
+  const { startDrawing, draw, finishDrawing, setIsDrawing, clearCanvas,  } =
     useContext(CanvasContext);
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -48,9 +51,9 @@ export default function GamePage() {
         socket.emit("give_words");
       }
     });
-    socket.on("client_start_drawing", ({ offsetX, offsetY }) => {
+    socket.on("client_start_drawing", ({ offsetX, offsetY, color, size }) => {
       setIsDrawing(true);
-      startDrawing(offsetX, offsetY);
+      startDrawing(offsetX, offsetY, color, size);
     });
     socket.on("client_finish_drawing", () => {
       setIsDrawing(false);
@@ -63,10 +66,15 @@ export default function GamePage() {
       chooseWords(words);
     })
     socket.on("start_turn",(data)=>{
-      const {time, wordLength, round}= data;
+      const {time, wordToGuess, round}= data;
       setTime(time);
-      setWordToGuessLength(wordLength);
+      setWordToGuess(wordToGuess);
       setRound(round);
+      
+    })
+    socket.on("hint", wordToGuess=>{
+      console.log(wordToGuess)
+      setWordToGuess(wordToGuess);
     })
     socket.on("clear_canvas", ()=>{
       clearCanvas();
@@ -74,18 +82,24 @@ export default function GamePage() {
     socket.on("results_done",()=>{
       setIsTurnOver(false);
       setIsGameOver(false);
+      setIsAllowedToDraw(false);
     })
     socket.on("time", (time)=>{
       setTime(time);
     })
     socket.on("turn_over", ()=>{
       setIsTurnOver(true);
+      setIsAllowedToDraw(false);
+      setCorrectWord("")
+    })
+    socket.on("disconnect",()=>{
+      reset();
+      // alert("lost connection to server");
     })
     socket.on("game_over", ()=>{
       setIsGameOver(true);
     })
     socket.on("game_started", ({ nextPlayer, chosenWords }) => {
-      console.log("next Player: " + nextPlayer);
       if (nextPlayer === username) {
         chooseWords(chosenWords);
       }

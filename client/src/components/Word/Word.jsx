@@ -4,7 +4,7 @@ import './word.scss'
 import { GameContext } from "../../contexts/GameContext";
 
 export default function Word() {
-  const {round, wordToGuessLength} = useContext(GameContext);
+  const {round, wordToGuess, correctWord} = useContext(GameContext);
   return (
     <div className="word-component">
       <div className="clock">
@@ -13,7 +13,7 @@ export default function Word() {
       </div>
       <div className="word">
         <div>Guess This</div>
-        <div className="word-to-guess">{[...Array(wordToGuessLength)].map(letter=><span style={{fontSize: "30px"}}> _ </span>)}</div>
+        <div className="word-to-guess">{correctWord !== ""? <span style={{fontSize: "30px"}}> {correctWord} </span> : wordToGuess.map(letter=><span style={{fontSize: "30px"}}> {letter} </span>)}</div>
       </div>
     </div>
   );

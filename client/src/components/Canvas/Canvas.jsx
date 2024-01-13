@@ -2,7 +2,7 @@ import "./canvas.styles.scss";
 import { useContext, useEffect, useRef } from "react";
 import { CanvasContext } from "../../contexts/CanvasContext";
 import { GameContext } from "../../contexts/GameContext";
-import pencil from "../../assets/pencil.png"
+
 
 export default function Canvas() {
   const {
@@ -11,13 +11,15 @@ export default function Canvas() {
     isDrawing,
     startDrawing,
     draw,
+    brushSize,
+    currentColor,
   } = useContext(CanvasContext);
   const { socket, isAllowedToDraw } = useContext(GameContext);
   const canvasRef = useRef(null);
   useEffect(() => {
     const canvas = canvasRef.current;
     canvas.height = window.innerHeight * 0.6;
-    canvas.width = window.innerWidth * 0.489;
+    canvas.width = window.innerWidth * 0.5;
     const ctx = canvas.getContext("2d");
     // ctx.scale(2, 2);
     ctx.lineCap = "round";
@@ -26,13 +28,13 @@ export default function Canvas() {
 
   const handleMouseEnter = ()=>{
     if(isAllowedToDraw){
-      canvasRef.current.style.cursor = `url(${pencil}), auto`
+      canvasRef.current.style.cursor = "url(./assets/pencil.png)"
     }
   }
   const handleMouseDown = ({ nativeEvent }) => {
     if (!isAllowedToDraw) return;
     const { offsetX, offsetY } = nativeEvent;
-    socket.emit("start_drawing", { offsetX, offsetY });
+    socket.emit("start_drawing", { offsetX, offsetY, color: currentColor, size: brushSize });
     startDrawing(offsetX, offsetY);
   };
   const handleMouseUp = () => {

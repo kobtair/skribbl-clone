@@ -25,8 +25,8 @@ export const GameContext = createContext({
   setTime: () => {},
   round: 1,
   setRound: () => {},
-  wordToGuessLength: 0,
-  setWordToGuessLength: () => {},
+  wordToGuess: [],
+  setWordToGuess: () => {},
   isAllowedToDraw: false,
   setIsAllowedToDraw: () => {},
   correctWord: "",
@@ -35,6 +35,7 @@ export const GameContext = createContext({
   setIsTurnOver: () => {},
   isGameOver: false,
   setIsGameOver: () => {},
+  reset: () => {},
 });
 
 export const GameContextProvider = ({ children }) => {
@@ -47,11 +48,23 @@ export const GameContextProvider = ({ children }) => {
   const [wordsToChooseFrom, setWordsToChooseFrom] = useState([]);
   const [time, setTime] = useState(60);
   const [round, setRound] = useState(1);
-  const [wordToGuessLength, setWordToGuessLength] = useState(0);
+  const [wordToGuess, setWordToGuess] = useState([]);
   const [isAllowedToDraw, setIsAllowedToDraw] = useState(false);
   const [correctWord, setCorrectWord] = useState("");
   const [isTurnOver, setIsTurnOver] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+
+  const reset = () => {
+    setPlayersList([]);
+    setCorrectWord("");
+    setWordToGuess([]);
+    setAvatar({});
+    setIsAllowedToDraw(false);
+    setIsChoosing(false);
+    setMessagesArray([]);
+    setRound(1);
+    setIsLoggedIn(false);
+  };
   const chooseWords = (chosenWords) => {
     setIsChoosing(true);
     setWordsToChooseFrom(chosenWords);
@@ -77,8 +90,8 @@ export const GameContextProvider = ({ children }) => {
     setIsChoosing,
     wordsToChooseFrom,
     chooseWords,
-    wordToGuessLength,
-    setWordToGuessLength,
+    wordToGuess,
+    setWordToGuess,
     time,
     setTime,
     round,
@@ -91,6 +104,7 @@ export const GameContextProvider = ({ children }) => {
     setIsTurnOver,
     isGameOver,
     setIsGameOver,
+    reset,
   };
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };

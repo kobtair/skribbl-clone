@@ -1,3 +1,4 @@
+// array of random words to give to draw in the game.
 const words = [
     'tree', 'house', 'sun', 'cat', 'dog', 'flower', 'smile', 'star', 'car', 'book',
     'heart', 'cloud', 'circle', 'apple', 'fish', 'bird', 'moon', 'mountain', 'umbrella',

@@ -14,6 +14,7 @@ export default function Modal() {
     playersList,
     isTurnOver,
     isGameOver,
+    isLoading,
   } = useContext(GameContext);
   const sendChoice = (e) => {
     setIsChoosing(false);
@@ -59,12 +60,20 @@ export default function Modal() {
       )}
       {isGameOver ? (
         <div>
-          Game has Ended
-          {playersList.map((player) => (
+          Game has Ended <br />
+          {`${playersList.sort((p1,p2)=>p1.score - p2.score)[0].username} has won`} <br />
+          {playersList.sort((p1,p2)=>p1.score - p2.score).map((player) => (
             <div>
               {player.username} {player.score}
             </div>
           ))}
+        </div>
+      ) : (
+        ""
+      )}
+      {isGameOver ? (
+        <div className="waiting">
+        <img src={loading} alt="loading" />
         </div>
       ) : (
         ""
