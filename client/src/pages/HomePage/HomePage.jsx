@@ -14,10 +14,9 @@ import { GameContext } from "../../contexts/GameContext";
 const HomePage = () => {
   const { setUsername, username, setAvatar, setIsLoggedIn, setPlayersList, socket } = useContext(GameContext);
   useEffect(() => {
-    socket.on("game_joined", (data) =>{
+    socket.on("game_joined", () =>{
       setIsLoggedIn(true);
       socket.emit("game_joined")
-      setPlayersList(data);
     })
   },[])
   const [topType, setTopType] = useState(10);

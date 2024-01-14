@@ -73,7 +73,6 @@ export default function GamePage() {
       
     })
     socket.on("hint", wordToGuess=>{
-      console.log(wordToGuess)
       setWordToGuess(wordToGuess);
     })
     socket.on("clear_canvas", ()=>{
@@ -81,16 +80,17 @@ export default function GamePage() {
     })
     socket.on("results_done",()=>{
       setIsTurnOver(false);
+      setCorrectWord("")
       setIsGameOver(false);
       setIsAllowedToDraw(false);
     })
     socket.on("time", (time)=>{
       setTime(time);
     })
-    socket.on("turn_over", ()=>{
+    socket.on("turn_over", (word)=>{
       setIsTurnOver(true);
       setIsAllowedToDraw(false);
-      setCorrectWord("")
+      setCorrectWord(word)
     })
     socket.on("disconnect",()=>{
       reset();

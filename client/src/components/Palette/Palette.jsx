@@ -28,7 +28,7 @@ export default function Palette() {
           </div>
         ))}
       </div>
-      <button onClick={handleClear}>Clear Canvas</button>
+      <button className="clear" onClick={handleClear}>Clear Canvas</button>
     </div>
   );
 }
