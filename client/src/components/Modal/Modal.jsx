@@ -1,6 +1,6 @@
 import "./modal.styles.scss";
 import loading from "../../assets/loading.gif";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../contexts/GameContext";
 
 export default function Modal() {
@@ -11,11 +11,15 @@ export default function Modal() {
     setCorrectWord,
     wordsToChooseFrom,
     socket,
+    correctWord,
     playersList,
     isTurnOver,
     isGameOver,
-    isLoading,
   } = useContext(GameContext);
+  const [sortedPlayers, setSortedPlayers] = useState([]);
+  useEffect(()=>{
+    setSortedPlayers(playersList.sort((a,b)=> b.score - a.score))
+  }, [playersList])
   const sendChoice = (e) => {
     setIsChoosing(false);
     setIsAllowedToDraw(true);
@@ -49,8 +53,9 @@ export default function Modal() {
       )}
       {isTurnOver ? (
         <div>
-          {playersList.sort((a,b)=> a.score - b.score).map((player) => (
-            <div>
+          The correct word was "{correctWord}"
+          {sortedPlayers.map((player) => (
+            <div key={player.id}>
               {player.username} {player.score}
             </div>
           ))}
@@ -61,19 +66,12 @@ export default function Modal() {
       {isGameOver ? (
         <div>
           Game has Ended <br />
-          {`${playersList.sort((p1,p2)=>p1.score - p2.score)[0].username} has won`} <br />
-          {playersList.sort((p1,p2)=>p1.score - p2.score).map((player) => (
-            <div>
+          {`${sortedPlayers[0].username} has won`} <br />
+          {playersList.sort((p1,p2)=>p2.score - p1.score).map((player) => (
+            <div key={player.id}>
               {player.username} {player.score}
             </div>
           ))}
-        </div>
-      ) : (
-        ""
-      )}
-      {isGameOver ? (
-        <div className="waiting">
-        <img src={loading} alt="loading" />
         </div>
       ) : (
         ""

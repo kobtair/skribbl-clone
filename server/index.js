@@ -50,7 +50,7 @@ io.on("connection", (socket) => {
     }
     // if not then start the next turn after 3 seconds to display scores after the turn.
     else {
-      io.sockets.emit("turn_over", guessedUsers);
+      io.sockets.emit("turn_over", game.currentWord);
       timer = setTimeout(startNextTurn, 3000);
     }
   };
@@ -148,7 +148,7 @@ io.on("connection", (socket) => {
     const newPlayer = new Player(socket.id, username, avatar);
     game.addPlayer(newPlayer);
     // telling everyone that a new player has joined.
-    socket.emit("game_joined", game.getPlayers());
+    socket.emit("game_joined");
     io.sockets.emit("receive_message", {
       username: "server",
       message: `${data.username} has joined the game`,
@@ -158,7 +158,7 @@ io.on("connection", (socket) => {
   // client telling the server that he has joined the game.
   socket.on("game_joined", () => {
     // telling other players to update their state because new player has joined.
-    socket.broadcast.emit("new_player", game.getPlayers());
+    io.sockets.emit("new_player", game.getPlayers());
     // starting the game if the game isn't already started and player count is more than 1.
     if (!game.isStarted && game.getPlayers().length >= 2) {
       game.startGame();
@@ -200,7 +200,7 @@ io.on("connection", (socket) => {
     // printing out which socket has disconnected.
     console.log(`a user has disconnected: ${socket.id}`);
     // finding the player who has disconnected using their id (which is also the socket id).
-    const disconnectedPlayer = game.playersList.find(
+    const disconnectedPlayer = game.getPlayers().find(
       (player) => player.id === socket.id
     ).username;
     // if the disconnected player is in the player list tell everyone else that he has left.

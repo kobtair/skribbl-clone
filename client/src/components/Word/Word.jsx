@@ -13,7 +13,7 @@ export default function Word() {
       </div>
       <div className="word">
         <div>Guess This</div>
-        <div className="word-to-guess">{correctWord !== ""? <span style={{fontSize: "30px"}}> {correctWord} </span> : wordToGuess.map(letter=><span style={{fontSize: "30px"}}> {letter} </span>)}</div>
+        <div className="word-to-guess">{correctWord !== ""? <span style={{fontSize: "30px"}}> {correctWord} </span> : wordToGuess.map((letter, i)=><span key={i} style={{fontSize: "30px"}}> {letter} </span>)}</div>
       </div>
     </div>
   );
