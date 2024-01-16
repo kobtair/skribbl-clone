@@ -10,6 +10,8 @@ class Game {
     this.time = 60;
     this.totalTime = 60;
     this.currentWord = "";
+    this.drawerWidth = 0;
+    this.drawerHeight = 0;
     this.totalRounds = 3;
     this.currentRound = 1;
     this.isStarted = false;

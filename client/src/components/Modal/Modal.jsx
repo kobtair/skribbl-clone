@@ -24,7 +24,7 @@ export default function Modal() {
     setIsChoosing(false);
     setIsAllowedToDraw(true);
     setCorrectWord(e.target.value);
-    socket.emit("send_choice", e.target.value);
+    socket.emit("send_choice", {choice: e.target.value, screenWidth: window.innerWidth, screenHeight: window.innerHeight});
   };
 
   return (

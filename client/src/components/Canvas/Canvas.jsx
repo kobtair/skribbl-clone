@@ -13,18 +13,22 @@ export default function Canvas() {
     draw,
     brushSize,
     currentColor,
+    canvasRef,
   } = useContext(CanvasContext);
   const { socket, isAllowedToDraw } = useContext(GameContext);
-  const canvasRef = useRef(null);
+  
   useEffect(() => {
     const canvas = canvasRef.current;
-    canvas.height = window.innerHeight * 0.6;
-    canvas.width = window.innerWidth * 0.5;
     const ctx = canvas.getContext("2d");
     // ctx.scale(2, 2);
     ctx.lineCap = "round";
     ctxRef.current = ctx;
   }, []);
+  useEffect(()=>{
+    const canvas = canvasRef.current;
+    canvas.height = window.innerHeight * 0.6;
+    canvas.width = window.innerWidth * 0.5;
+  },[window.innerWidth])
 
   const handleMouseEnter = ()=>{
     if(isAllowedToDraw){
