@@ -31,7 +31,7 @@ export default function GamePage() {
     setIsAllowedToDraw,
     setCorrectWord,
   } = useContext(GameContext);
-  const { startDrawing, draw, finishDrawing, setIsDrawing, clearCanvas,  } =
+  const { startDrawing, draw, finishDrawing, setIsDrawing, clearCanvas, resizeCanvas   } =
     useContext(CanvasContext);
   useEffect(() => {
     socket.on("receive_message", (data) => {
@@ -66,11 +66,11 @@ export default function GamePage() {
       chooseWords(words);
     })
     socket.on("start_turn",(data)=>{
-      const {time, wordToGuess, round}= data;
+      const {time, wordToGuess, round, drawerWidth, drawerHeight}= data;
       setTime(time);
       setWordToGuess(wordToGuess);
       setRound(round);
-      
+      resizeCanvas(drawerWidth, drawerHeight);
     })
     socket.on("hint", wordToGuess=>{
       setWordToGuess(wordToGuess);

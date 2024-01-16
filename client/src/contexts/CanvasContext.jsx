@@ -12,6 +12,8 @@ export const CanvasContext = createContext({
   draw: () => {},
   finishDrawing: () => {},
   clearCanvas: () => {},
+  canvasRef: null,
+  resizeCanvas: () => {},
 });
 
 export const CanvasContextProvider = ({ children }) => {
@@ -19,6 +21,7 @@ export const CanvasContextProvider = ({ children }) => {
   const [brushSize, setBrushSize] = useState(5);
   const [isDrawing, setIsDrawing] = useState(false);
   const ctxRef = useRef(null);
+  const canvasRef = useRef(null);
   const startDrawing = (offsetX, offsetY, color = currentColor, size = brushSize) => {
     setIsDrawing(true);
     ctxRef.current.strokeStyle = color;
@@ -36,8 +39,11 @@ export const CanvasContextProvider = ({ children }) => {
   };
   const clearCanvas = () => {
     ctxRef.current.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
   };
+  const resizeCanvas = (width, height) => {
+    canvasRef.current.width = width*0.5;
+    canvasRef.current.height = height*0.6;
+  }
 
   const value = {
     currentColor,
@@ -51,6 +57,8 @@ export const CanvasContextProvider = ({ children }) => {
     draw,
     finishDrawing,
     clearCanvas,
+    canvasRef,
+    resizeCanvas,
   };
   return (
     <CanvasContext.Provider value={value}>{children}</CanvasContext.Provider>

@@ -14,7 +14,7 @@ const server = http.createServer(app);
 // change the cors origin to the domain or url of the client.
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "http://192.168.43.217:5173",
     methods: ["GET", "POST"],
   },
 });
@@ -173,7 +173,7 @@ io.on("connection", (socket) => {
     socket.emit("receive_words", threeWords);
   });
   // chooser sending back his choice from the three words.
-  socket.on("send_choice", (choice) => {
+  socket.on("send_choice", ({choice, screenWidth, screenHeight}) => {
     // assigning drawing role to the chooser and taking back his choosing role.
     const drawer = game.getPlayers().find((player) => player.id === socket.id);
     drawer.isDrawing = true;
@@ -181,6 +181,9 @@ io.on("connection", (socket) => {
     game.drawer = drawer.username;
     // updating the current word to the word chosen by the chooser.
     game.currentWord = choice;
+    // updating the parent width of the canvas to ensure everyone resizes their canvas for the turn.
+    game.drawerWidth = screenWidth;
+    game.drawerHeight = screenHeight;
     updatePlayersState();
     /* generating an array based on the length of the correct word to display of the client side. 
       Something like this ([ _ , _ , _ , _ , _ , _ ])    
@@ -191,6 +194,8 @@ io.on("connection", (socket) => {
       time: game.time,
       wordToGuess,
       round: game.currentRound,
+      drawerWidth: game.drawerWidth,
+      drawerHeight: game.drawerHeight,
     });
     // starting the timer.
     startTimer();
