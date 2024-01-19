@@ -66,7 +66,7 @@ export default function Modal() {
       {isGameOver ? (
         <div>
           Game has Ended <br />
-          {`${sortedPlayers[0].username} has won`} <br />
+          {`${playersList.sort((a,b)=> b.score - a.score)[0].username} has won`} <br />
           {playersList.sort((p1,p2)=>p2.score - p1.score).map((player) => (
             <div key={player.id}>
               {player.username} {player.score}

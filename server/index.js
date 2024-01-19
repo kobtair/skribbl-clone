@@ -14,7 +14,7 @@ const server = http.createServer(app);
 // change the cors origin to the domain or url of the client.
 const io = new Server(server, {
   cors: {
-    origin: "http://192.168.43.217:5173",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
@@ -46,7 +46,10 @@ io.on("connection", (socket) => {
     ) {
       io.sockets.emit("game_over", game.getPlayers());
       game.reset();
-      timer = setTimeout(startNextTurn, 5000);
+      timer = setTimeout(()=>{
+        game.isStarted = true;
+        startNextTurn()
+      }, 10000);
     }
     // if not then start the next turn after 3 seconds to display scores after the turn.
     else {
@@ -145,6 +148,9 @@ io.on("connection", (socket) => {
   socket.on("join_game", (data) => {
     const { username, avatar } = data;
     // creating a new instace of the player object and pushing it into the game object
+    if(game.playersList.find(p=>p.id == socket.id)){
+      return
+    }
     const newPlayer = new Player(socket.id, username, avatar);
     game.addPlayer(newPlayer);
     // telling everyone that a new player has joined.
@@ -223,6 +229,7 @@ io.on("connection", (socket) => {
     // if player count is less than 2 then stop and reset the game as it cannot continue.
     if (game.playersList.length < 2) {
       game.reset();
+      clearInterval(timer);
     }
   });
 });

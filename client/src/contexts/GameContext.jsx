@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 import { io } from "socket.io-client";
 
-const socket = io.connect("http://192.168.43.217:3001");
+const socket = io.connect("http://localhost:3001");
 
 export const GameContext = createContext({
   username: "",

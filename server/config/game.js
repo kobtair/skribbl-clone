@@ -8,6 +8,7 @@ class Game {
     this.playersList = [];
     this.drawer = "";
     this.time = 60;
+    this.draw = []
     this.totalTime = 60;
     this.currentWord = "";
     this.drawerWidth = 0;
