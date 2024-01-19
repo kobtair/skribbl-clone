@@ -8,7 +8,7 @@ export default function Player({player, order}) {
   const {top, eye, mouth, clothe} = avatar;
   return (
     <div  className={`player-container ${order%2===0 && "player-odd"} ${(hasGuessed && !isDrawing && !isChoosing )? "player-guessed" : ""}`}>
-      <div className="rank">{`#1`}</div>
+      <div className="rank">{`${order+1}`}</div>
       <div className="player-name ">
         <div>
         {`${player.username} `}

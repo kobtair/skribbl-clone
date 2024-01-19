@@ -1,13 +1,14 @@
 import { useContext, useState } from "react";
 import "./chat.styles.scss";
 import { GameContext } from "../../contexts/GameContext";
+import ScrollToBottom from "react-scroll-to-bottom"
 
 export default function Chat() {
   const { messagesArray, sendMessage } = useContext(GameContext);
   const [message, setMessage] = useState("");
   return (
     <div className="chat">
-      <div className="chat-body">
+      <ScrollToBottom className="chat-body">
         {messagesArray.map(({ username, message, color }, i) => (
           <div className={i%2===0?"message-odd":""} key={i} >
             <span
@@ -16,7 +17,7 @@ export default function Chat() {
             <span style={{ color: color }}>{message}</span>
           </div>
         ))}
-      </div>
+      </ScrollToBottom>
       <form
         className="chat-footer"
         onSubmit={(e) => {

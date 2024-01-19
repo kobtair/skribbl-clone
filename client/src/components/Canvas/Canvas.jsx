@@ -14,6 +14,8 @@ export default function Canvas() {
     brushSize,
     currentColor,
     canvasRef,
+    prevCoordianates,
+    setPrevCoordinates
   } = useContext(CanvasContext);
   const { socket, isAllowedToDraw } = useContext(GameContext);
   
@@ -43,15 +45,17 @@ export default function Canvas() {
   };
   const handleMouseUp = () => {
     if (!isAllowedToDraw) return;
+    setPrevCoordinates({offsetX: 0, offsetY: 0});
     socket.emit("finish_drawing");
     finishDrawing();
   };
   const handleMouseMove = ({ nativeEvent }) => {
     if (!isAllowedToDraw) return;
     const { offsetX, offsetY } = nativeEvent;
-    if (isDrawing) {
+    if (isDrawing && (Math.abs(offsetX -prevCoordianates.offsetX)>brushSize+5 || Math.abs(offsetY - prevCoordianates.offsetY)>brushSize+5)) {
       socket.emit("draw", { offsetX, offsetY });
       draw(offsetX, offsetY);
+      setPrevCoordinates({offsetX, offsetY});
     }
     else{
       return;
