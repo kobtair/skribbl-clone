@@ -14,7 +14,7 @@ const server = http.createServer(app);
 // change the cors origin to the domain or url of the client.
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://skribble-clone.netlify.app/",
     methods: ["GET", "POST"],
   },
 });
