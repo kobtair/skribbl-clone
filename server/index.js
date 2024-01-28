@@ -227,7 +227,7 @@ io.on("connection", (socket) => {
     // tell other players to remove him as well.
     socket.broadcast.emit("remove_player", game.playersList);
     // if player count is less than 2 then stop and reset the game as it cannot continue.
-    if (game.playersList.length < 2) {
+    if (game.playersList.length < 2 && game.isStarted) {
       game.reset();
       clearInterval(timer);
     }
