@@ -1,0 +1,50 @@
+.chat{
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 0, 0, 15px, 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.chat-body{
+    height:43vh ;
+    overflow-y: scroll;
+}
+.chat-footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 5%;
+    padding: 30px;
+    border: 1px solid black;
+}
+
+.send-button{
+    all: unset;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #2bab2b;
+    color: white;
+    border-radius: 10px;
+    
+}
+
+.send-button:hover{
+    background-color: #1d851d;
+}
+
+.username{
+    font-weight: bold;
+}
+.joined{
+    color: #2bab2b;
+}
+.left{
+    color: red;
+}
+.message{
+    color: black;
+}
+.message-odd{
+    background-color: #dadada;
+}

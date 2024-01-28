@@ -1,0 +1,21 @@
+.logo-container{
+    border-radius: 15px 15px 0 0;
+    overflow: hidden;
+}
+
+.game-container{
+    // padding-inline: 40px;
+    display: grid;
+    grid-template-columns: 20%;
+}
+
+.main-game-components{
+    grid-column-start: 1;
+    grid-column-end: span 5;
+    display: grid;
+    column-gap: 5px;
+    grid-template-columns: 20% 50% 29%;
+    
+}
+
+

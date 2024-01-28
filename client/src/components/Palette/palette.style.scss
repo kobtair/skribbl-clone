@@ -1,0 +1,76 @@
+.palette-container{
+    grid-column-start: 1;
+    grid-column-end: span 5;
+    display: flex;
+    column-gap: 5px;
+    background-color: white;
+    margin-top: 5px;
+    padding: 5px;
+    .clear{
+        all: unset;
+        cursor: pointer;
+        border: 2px solid black;
+        border-radius: 5px;
+        padding-inline: 10px;
+    }
+}
+.selected-color{
+    min-height: 100%;
+    aspect-ratio: 1;
+    border: 1px solid black;
+}
+.colors{
+    min-width: 40%;
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+}
+
+.color{
+    cursor: pointer;
+    aspect-ratio: 1;
+}
+
+.hidden{
+    display: none;
+}
+
+.brush-selector {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  
+  .brush {
+    all: unset;
+    padding: 8px 12px;
+    background-color: white;
+    height: 85%;
+    color: black;
+    border: 2px solid black;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .menu {
+    position: absolute;
+    bottom: 100%; /* Adjust the top position based on your design */
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    z-index: 1;
+  }
+  
+  .menu div {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .menu div:hover {
+    background-color: #adacac;
+  }
+  
